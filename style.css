@@ -1,0 +1,21 @@
+body {
+  font-family: Georgia, serif;
+  background: #f5f2ed;
+  text-align: center;
+  padding: 50px;
+}
+
+#carte {
+  margin: 40px auto;
+  max-width: 600px;
+  font-size: 1.5em;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+}
+
+button {
+  font-size: 1em;
+  padding: 10px 20px;
+  cursor: pointer;
+}
