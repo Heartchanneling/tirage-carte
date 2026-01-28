@@ -1,21 +1,17 @@
-body {
-  font-family: Georgia, serif;
-  background: #f5f2ed;
-  text-align: center;
-  padding: 50px;
-}
-
-#carte {
-  margin: 40px auto;
-  max-width: 600px;
-  font-size: 1.5em;
+.carte {
+  width: 400px;            /* reste un carré visuel */
+  max-width: 90vw;         /* responsive */
   padding: 30px;
-  background: white;
-  border-radius: 10px;
-}
-
-button {
-  font-size: 1em;
-  padding: 10px 20px;
-  cursor: pointer;
+  background-color: #FF7F50;
+  border: 12px solid #d2b48c;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  text-align: center;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  font-family: 'Georgia', serif;
+  
+  /* --- AJOUTS --- */
+  max-height: 90vw;        /* limite la hauteur max */
+  overflow-y: auto;        /* scroll si le texte dépasse */
 }
