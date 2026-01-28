@@ -36,15 +36,12 @@
 
 .carte {
   position: relative;
-
   width: 400px;
   max-width: 90vw;
   min-height: 400px;
-  max-height: 80vh;
   padding: 30px;
 
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -57,8 +54,10 @@
   font-family: Georgia, serif;
   white-space: pre-line;
   overflow-y: auto;
+}
 
-  animation: fadeZoom 0.5s ease forwards;
+#contenu-citation {
+  width: 100%;
 }
 
 .signature {
@@ -74,7 +73,6 @@
   right: 14px;
   font-size: 12px;
   color: rgba(0,0,0,0.5);
-  font-family: Arial, sans-serif;
 }
 
 .btn-tirer {
@@ -88,19 +86,6 @@
   color: #FF7F50;
   font-weight: 700;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: transform 0.25s;
-}
-
-.btn-tirer:hover {
-  transform: scale(1.08);
-}
-
-@media (max-width: 500px) {
-  .carte {
-    width: 90vw;
-    min-height: 90vw;
-    padding: 20px;
-  }
 }
 </style>
 </head>
@@ -109,8 +94,8 @@
 <div class="tirage-container">
   <h1 class="titre">Tirage de cartes de citations canalisées</h1>
 
-  <div class="carte" id="carte">
-    Chargement...
+  <div class="carte">
+    <div id="contenu-citation">Chargement…</div>
     <div class="copyright">© Copyright</div>
   </div>
 
@@ -130,35 +115,24 @@ fetch("citations.json?" + Date.now())
   });
 
 function tirerCarte() {
-  const carte = document.getElementById("carte");
-
   if (!citations.length) return;
 
   const texte = citations[Math.floor(Math.random() * citations.length)];
+  const contenu = document.getElementById("contenu-citation");
 
-  const contenu = `
-    <div class="texte">${texte.replace(
-      "Etre Tout Simplement",
-      "<div class='signature'>Etre Tout Simplement</div>"
-    )}</div>
-    <div class="copyright">© Copyright</div>
-  `;
+  const texteFormate = texte.replace(
+    "Etre Tout Simplement",
+    "<div class='signature'>Etre Tout Simplement</div>"
+  );
 
-  carte.style.animation = "none";
-  void carte.offsetWidth;
-  carte.innerHTML = contenu;
-  carte.style.animation = "fadeZoom 0.5s ease forwards";
+  contenu.innerHTML = texteFormate;
 
-  // Taille adaptative
-  if (texte.length < 120) carte.style.fontSize = "1.6rem";
-  else if (texte.length < 200) carte.style.fontSize = "1.3rem";
-  else carte.style.fontSize = "1.1rem";
+  const longueur = texte.length;
+  if (longueur < 120) contenu.style.fontSize = "1.6rem";
+  else if (longueur < 200) contenu.style.fontSize = "1.3rem";
+  else contenu.style.fontSize = "1.1rem";
 }
 </script>
 </body>
 </html>
 
-</script>
-
-</body>
-</html>
