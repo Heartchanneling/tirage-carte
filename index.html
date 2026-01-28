@@ -1,22 +1,119 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Tirage de carte</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tirage de carte</title>
+
+<style>
+/* Conteneur général centré */
+.tirage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #fff;
+  font-family: 'Georgia', serif;
+}
+
+/* Titre */
+.titre {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Carte / citation */
+.carte {
+  width: 400px;
+  height: 400px;
+  padding: 30px;
+  background-color: #FF7F50; /* corail */
+  border: 10px solid #d2b48c;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: center;
+  overflow-wrap: break-word;
+  white-space: pre-line; 
+  position: relative;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  background-image: url('https://i.imgur.com/4t8FZZk.png'); /* texture parchemin */
+  background-size: cover;
+  background-position: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Coloration spécifique des signatures */
+.carte span.signature {
+  display: block;
+  color: #8A2BE2; /* violet/rose */
+  margin-top: 5px;
+}
+
+.carte span.titre-signature {
+  display: block;
+  color: #228B22; /* vert */
+  margin-bottom: 5px;
+}
+
+/* Bouton */
+.btn-tirer {
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #fff;
+  color: #FF7F50;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.btn-tirer:hover {
+  transform: scale(1.05);
+}
+</style>
 </head>
+
 <body>
+<div class="tirage-container">
+  <h1 class="titre">Tirage de carte</h1>
 
-  <h1>Tirage de carte</h1>
-
-  <div id="carte">
-    Clique sur le bouton pour tirer une carte
+  <div class="carte" id="carte">
+    <!-- La citation sera injectée ici par JS -->
   </div>
 
-  <button onclick="tirerCarte()">
-    Tirer une carte
-  </button>
+  <button onclick="tirerCarte()" class="btn-tirer">Tirer une carte</button>
+</div>
 
-  <script src="script.js"></script>
+<script>
+let citations = [];
+
+// Charger le JSON avec cache-buster
+fetch("citations.json?" + Date.now())
+  .then(response => response.json())
+  .then(data => citations = data)
+  .catch(err => console.error("Erreur fetch JSON:", err));
+
+function tirerCarte() {
+  if (citations.length === 0) return;
+
+  const index = Math.floor(Math.random() * citations.length);
+  let texte = citations[index];
+
+  // Ajouter les spans pour colorer les signatures
+  texte = texte.replace("Etre Tout Simplement", '<span class="titre-signature">Etre Tout Simplement</span>');
+  texte = texte.replace("Nadia@AuraEclairage & Corinne Passeuse", '<span class="signature">Nadia@AuraEclairage & Corinne Passeuse</span>');
+
+  document.getElementById("carte").innerHTML = texte;
+}
+</script>
+
 </body>
 </html>
+
