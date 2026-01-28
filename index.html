@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tirage de carte</title>
+<title>Tirage de cartes canalisées</title>
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-/* Conteneur général centré */
 .tirage-container {
   display: flex;
   flex-direction: column;
@@ -19,113 +18,88 @@
   background: #fff8f5;
   font-family: 'Montserrat', sans-serif;
   padding: 20px;
-  box-sizing: border-box;
 }
 
-/* Titre */
 .titre {
   text-align: center;
   margin-bottom: 20px;
   font-family: 'Great Vibes', cursive;
   font-size: 2.5rem;
-  font-weight: 700;
   color: #FF6F61;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
-/* Animation fade + zoom */
 @keyframes fadeZoom {
-  0% { opacity: 0; transform: scale(0.95); }
-  100% { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* Carte / citation premium */
 .carte {
+  position: relative;
+
   width: 400px;
   max-width: 90vw;
   min-height: 400px;
   max-height: 80vh;
   padding: 30px;
 
-  /* Dégradé corail + texture parchemin */
-  background: linear-gradient(135deg, #FF8C70, #FF7F50);
-  background-blend-mode: overlay;
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
+  background: linear-gradient(135deg, #FF8C70, #FF7F50);
   border: 12px solid #d2b48c;
   border-radius: 25px;
   box-shadow: 0 15px 50px rgba(0,0,0,0.35);
 
-  text-align: center;
-  overflow-wrap: break-word;
+  font-family: Georgia, serif;
   white-space: pre-line;
-  font-family: 'Georgia', serif;
   overflow-y: auto;
-  margin-bottom: 25px;
 
-  <div class="copyright">© Copyright</div>
-
-  /* Animation */
   animation: fadeZoom 0.5s ease forwards;
-
-  /* Ombre texte pour lisibilité */
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.25);
 }
 
-/* Signatures colorées avec ombre douce */
-.carte span.titre-signature {
-  display: block;
-  color: #228B22; /* vert */
-  margin-bottom: 5px;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+.signature {
+  margin-top: 25px;
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem;
+  color: #228B22;
 }
 
-.carte span.signature {
-  display: block;
-  color: #8A2BE2; /* violet/rose */
-  margin-top: 8px;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+.copyright {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 12px;
+  color: rgba(0,0,0,0.5);
+  font-family: Arial, sans-serif;
 }
 
-/* Bouton stylé Instagram */
 .btn-tirer {
+  margin-top: 20px;
   padding: 12px 25px;
   font-size: 1.1rem;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(145deg, #fff 0%, #FFE0B2 100%);
+  background: linear-gradient(145deg, #fff, #FFE0B2);
   color: #FF7F50;
   font-weight: 700;
   box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: transform 0.25s, box-shadow 0.25s;
+  transition: transform 0.25s;
 }
 
 .btn-tirer:hover {
   transform: scale(1.08);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
 }
 
-/* --- Responsive --- */
 @media (max-width: 500px) {
   .carte {
     width: 90vw;
     min-height: 90vw;
     padding: 20px;
-    font-size: 1rem;
-  }
-
-  .titre {
-    font-size: 2rem;
-  }
-
-  .btn-tirer {
-    width: 65%;
-    font-size: 1rem;
-    padding: 10px 12px;
   }
 }
 </style>
@@ -133,60 +107,57 @@
 
 <body>
 <div class="tirage-container">
-  <h1 class="titre">Tirage de carte</h1>
+  <h1 class="titre">Tirage de cartes canalisées</h1>
 
   <div class="carte" id="carte">
-    Chargement en cours...
+    Chargement...
+    <div class="copyright">© Copyright</div>
   </div>
 
-  <button onclick="tirerCarte()" class="btn-tirer">Tirer une carte</button>
+  <button onclick="tirerCarte()" class="btn-tirer">
+    Tirer une carte canalisée
+  </button>
 </div>
 
 <script>
 let citations = [];
 
-// Charger le JSON avec cache-buster
 fetch("citations.json?" + Date.now())
-  .then(response => response.json())
+  .then(r => r.json())
   .then(data => {
     citations = data;
-    tirerCarte(); // Affiche une première carte immédiatement
-  })
-  .catch(err => {
-    console.error("Erreur fetch JSON:", err);
-    document.getElementById("carte").innerText = "Impossible de charger les citations.";
+    tirerCarte();
   });
 
 function tirerCarte() {
   const carte = document.getElementById("carte");
-  
-  if (citations.length === 0) {
-    carte.innerText = "Chargement en cours...";
-    return;
-  }
 
-  const index = Math.floor(Math.random() * citations.length);
-  let texte = citations[index];
+  if (!citations.length) return;
 
-  // Coloration des signatures
-  texte = texte.replace("Etre Tout Simplement", '<span class="titre-signature">Etre Tout Simplement</span>');
-  texte = texte.replace("Nadia@AuraEclairage & Corinne Passeuse", '<span class="signature">Nadia@AuraEclairage & Corinne Passeuse</span>');
+  const texte = citations[Math.floor(Math.random() * citations.length)];
 
-  // Réinitialiser l'animation pour chaque tirage
+  const contenu = `
+    <div class="texte">${texte.replace(
+      "Etre Tout Simplement",
+      "<div class='signature'>Etre Tout Simplement</div>"
+    )}</div>
+    <div class="copyright">© Copyright</div>
+  `;
+
   carte.style.animation = "none";
-  void carte.offsetWidth; // force recalcul
-  carte.innerHTML = texte;
+  void carte.offsetWidth;
+  carte.innerHTML = contenu;
   carte.style.animation = "fadeZoom 0.5s ease forwards";
 
-  // Ajuste la taille de la police selon la longueur
-  if (texte.length > 350) {
-    carte.style.fontSize = "1rem";
-  } else if (texte.length > 250) {
-    carte.style.fontSize = "1.05rem";
-  } else {
-    carte.style.fontSize = "1.15rem";
-  }
+  // Taille adaptative
+  if (texte.length < 120) carte.style.fontSize = "1.6rem";
+  else if (texte.length < 200) carte.style.fontSize = "1.3rem";
+  else carte.style.fontSize = "1.1rem";
 }
+</script>
+</body>
+</html>
+
 </script>
 
 </body>
