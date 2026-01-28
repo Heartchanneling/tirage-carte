@@ -6,7 +6,6 @@ function tirerCarte() {
 
   // Coloration des signatures
   texte = texte.replace("Etre Tout Simplement", '<span class="titre-signature">Etre Tout Simplement</span>');
-  texte = texte.replace("Nadia@AuraEclairage & Corinne Passeuse", '<span class="signature">Nadia@AuraEclairage & Corinne Passeuse</span>');
 
   const carte = document.getElementById("carte");
   carte.innerHTML = texte;
