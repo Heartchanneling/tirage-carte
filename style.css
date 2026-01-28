@@ -5,6 +5,12 @@
   max-height: 80vh;
   padding: 30px;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* centrage vertical */
+  align-items: center;       /* centrage horizontal */
+  text-align: center;
+
   background: linear-gradient(135deg, #FF8C70, #FF7F50); /* juste le dégradé */
   border: 12px solid #d2b48c;
   border-radius: 25px;
