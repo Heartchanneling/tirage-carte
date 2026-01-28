@@ -1,8 +1,8 @@
 .carte {
-  width: 400px;            /* reste un carré visuel */
-  max-width: 90vw;         /* responsive */
+  width: 400px;
+  max-width: 90vw;
   padding: 30px;
-  background-color: #FF7F50;
+  background-color: #FF7F50; /* corail */
   border: 12px solid #d2b48c;
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(0,0,0,0.3);
@@ -10,8 +10,11 @@
   overflow-wrap: break-word;
   white-space: pre-line;
   font-family: 'Georgia', serif;
-  
-  /* --- AJOUTS --- */
-  max-height: 90vw;        /* limite la hauteur max */
-  overflow-y: auto;        /* scroll si le texte dépasse */
+
+  /* --- MODIFICATION --- */
+  height: auto;          /* hauteur flexible */
+  min-height: 400px;     /* au moins 400px pour le carré visuel */
+  max-height: 80vh;      /* ne dépasse pas 80% de la hauteur de l’écran */
+  overflow-y: auto;      /* scroll vertical si nécessaire */
 }
+
