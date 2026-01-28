@@ -5,25 +5,31 @@
   max-height: 80vh;
   padding: 30px;
 
+  position: relative; /* ⭐ essentiel pour le copyright */
+
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* centrage vertical */
-  align-items: center;       /* centrage horizontal */
+  justify-content: center;
+  align-items: center;
   text-align: center;
 
-  background: linear-gradient(135deg, #FF8C70, #FF7F50); /* juste le dégradé */
+  background: linear-gradient(135deg, #FF8C70, #FF7F50);
   border: 12px solid #d2b48c;
   border-radius: 25px;
   box-shadow: 0 15px 50px rgba(0,0,0,0.35);
 
-  text-align: center;
   overflow-wrap: break-word;
   white-space: pre-line;
   font-family: 'Georgia', serif;
   overflow-y: auto;
   margin-bottom: 25px;
 
-  .copyright {
+  animation: fadeZoom 0.5s ease forwards;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+}
+
+/* ⭐ classe séparée, pas imbriquée */
+.copyright {
   position: absolute;
   bottom: 12px;
   right: 16px;
@@ -31,9 +37,3 @@
   color: rgba(0,0,0,0.5);
   font-family: Arial, sans-serif;
 }
-
-  animation: fadeZoom 0.5s ease forwards;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.25);
-}
-
-
