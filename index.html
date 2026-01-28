@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tirage de carte</title>
 
+<!-- Google Fonts pour style Instagram -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 /* Conteneur général centré */
 .tirage-container {
@@ -13,69 +16,105 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #fff;
-  font-family: 'Georgia', serif;
+  background: #fff8f5;
+  font-family: 'Montserrat', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* Titre */
 .titre {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 2rem;
-  font-weight: bold;
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FF6F61;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Carte / citation */
 .carte {
   width: 400px;
   height: 400px;
+  max-width: 90vw;
+  max-height: 90vw;
   padding: 30px;
   background-color: #FF7F50; /* corail */
-  border: 10px solid #d2b48c;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border: 12px solid #d2b48c; /* bord parchemin */
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   text-align: center;
   overflow-wrap: break-word;
   white-space: pre-line; 
   position: relative;
-  font-size: 1.1rem;
-  line-height: 1.5;
+  font-size: 1.15rem;
+  line-height: 1.6;
   background-image: url('https://i.imgur.com/4t8FZZk.png'); /* texture parchemin */
   background-size: cover;
   background-position: center;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-family: 'Georgia', serif;
+  transition: transform 0.3s;
 }
 
-/* Coloration spécifique des signatures */
+.carte:hover {
+  transform: scale(1.02);
+}
+
+/* Signatures colorées */
 .carte span.signature {
   display: block;
   color: #8A2BE2; /* violet/rose */
-  margin-top: 5px;
+  margin-top: 8px;
+  font-weight: bold;
 }
 
 .carte span.titre-signature {
   display: block;
   color: #228B22; /* vert */
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
-/* Bouton */
+/* Bouton stylé Instagram */
 .btn-tirer {
-  padding: 10px 20px;
+  padding: 12px 25px;
   font-size: 1.1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  background: #fff;
+  background: linear-gradient(145deg, #fff 0%, #FFE0B2 100%);
   color: #FF7F50;
-  font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .btn-tirer:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+}
+
+/* --- Responsive --- */
+@media (max-width: 500px) {
+  .carte {
+    width: 90vw;
+    height: 90vw;
+    padding: 20px;
+    font-size: 1rem;
+  }
+
+  .titre {
+    font-size: 2rem;
+  }
+
+  .btn-tirer {
+    width: 65%;
+    font-size: 1rem;
+    padding: 10px 12px;
+  }
 }
 </style>
 </head>
