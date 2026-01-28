@@ -1,20 +1,24 @@
 .carte {
   width: 400px;
   max-width: 90vw;
+  min-height: 400px;
+  max-height: 80vh;
   padding: 30px;
-  background-color: #FF7F50; /* corail */
+
+  background: linear-gradient(135deg, #FF8C70, #FF7F50); /* juste le dégradé */
   border: 12px solid #d2b48c;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  border-radius: 25px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.35);
+
   text-align: center;
   overflow-wrap: break-word;
   white-space: pre-line;
   font-family: 'Georgia', serif;
+  overflow-y: auto;
+  margin-bottom: 25px;
 
-  /* --- MODIFICATION --- */
-  height: auto;          /* hauteur flexible */
-  min-height: 400px;     /* au moins 400px pour le carré visuel */
-  max-height: 80vh;      /* ne dépasse pas 80% de la hauteur de l’écran */
-  overflow-y: auto;      /* scroll vertical si nécessaire */
+  animation: fadeZoom 0.5s ease forwards;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.25);
 }
+
 
