@@ -33,6 +33,12 @@
   text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
+/* Animation fade + zoom */
+@keyframes fadeZoom {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
 /* Carte / citation */
 .carte {
   width: 400px;
@@ -40,21 +46,22 @@
   min-height: 400px;
   max-height: 80vh;
   padding: 30px;
-  background-color: #FF7F50; /* corail */
+
+  /* Dégradé corail Instagram */
+  background: linear-gradient(135deg, #FF8C70, #FF7F50);
   border: 12px solid #d2b48c;
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+
   text-align: center;
   overflow-wrap: break-word;
   white-space: pre-line;
   font-family: 'Georgia', serif;
   overflow-y: auto;
   margin-bottom: 25px;
-  transition: transform 0.3s;
-}
 
-.carte:hover {
-  transform: scale(1.02);
+  /* Animation initiale */
+  animation: fadeZoom 0.5s ease forwards;
 }
 
 /* Signatures colorées */
@@ -132,7 +139,7 @@ fetch("citations.json?" + Date.now())
   .then(response => response.json())
   .then(data => {
     citations = data;
-    tirerCarte(); // Affiche immédiatement une citation
+    tirerCarte(); // Affiche une première carte immédiatement
   })
   .catch(err => {
     console.error("Erreur fetch JSON:", err);
@@ -154,7 +161,11 @@ function tirerCarte() {
   texte = texte.replace("Etre Tout Simplement", '<span class="titre-signature">Etre Tout Simplement</span>');
   texte = texte.replace("Nadia@AuraEclairage & Corinne Passeuse", '<span class="signature">Nadia@AuraEclairage & Corinne Passeuse</span>');
 
+  // Réinitialiser l'animation pour chaque tirage
+  carte.style.animation = "none";
+  void carte.offsetWidth; // force recalcul
   carte.innerHTML = texte;
+  carte.style.animation = "fadeZoom 0.5s ease forwards";
 
   // Ajuste la taille de la police selon la longueur
   if (texte.length > 350) {
