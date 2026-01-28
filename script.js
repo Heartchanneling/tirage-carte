@@ -4,18 +4,25 @@ function tirerCarte() {
   const index = Math.floor(Math.random() * citations.length);
   let texte = citations[index];
 
-  // Coloration des signatures
-  texte = texte.replace("Etre Tout Simplement", '<span class="titre-signature">Etre Tout Simplement</span>');
+  // Mise en forme du titre
+  texte = texte.replace(
+    "Etre Tout Simplement",
+    '<span class="titre-signature">Etre Tout Simplement</span>'
+  );
 
-  const carte = document.getElementById("carte");
-  carte.innerHTML = texte;
+  const contenu = document.getElementById("contenu-citation");
 
-  // Ajuste la taille de la police si le texte est long
-  if (texte.length > 350) {
-    carte.style.fontSize = "1rem";
-  } else if (texte.length > 250) {
-    carte.style.fontSize = "1.05rem";
+  // Injection du texte uniquement (on ne touche pas au copyright)
+  contenu.innerHTML = texte;
+
+  // Ajustement intelligent de la taille de police
+  const longueur = texte.replace(/<[^>]*>/g, "").length; // sans HTML
+
+  if (longueur > 350) {
+    contenu.style.fontSize = "1rem";
+  } else if (longueur > 250) {
+    contenu.style.fontSize = "1.05rem";
   } else {
-    carte.style.fontSize = "1.15rem";
+    contenu.style.fontSize = "1.15rem";
   }
 }
