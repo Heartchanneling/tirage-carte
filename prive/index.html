@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tirage privé – Citations canalisées</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  background:#fff8f5;
+  font-family: Montserrat;
+  text-align:center;
+}
+
+.carte {
+  margin:30px auto;
+  width:400px;
+  max-width:90%;
+  min-height:400px;
+  padding:30px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(135deg,#FF8C70,#FF7F50);
+  border:12px solid #d2b48c;
+  border-radius:25px;
+}
+
+.signature {
+  margin-top:20px;
+  font-family:'Great Vibes';
+  font-size:2rem;
+  color:#228B22;
+}
+
+button {
+  padding:12px 25px;
+  border:none;
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Tirage privé</h1>
+
+<div class="carte">
+  <div id="citation">Connexion sécurisée…</div>
+</div>
+
+<button onclick="tirer()">Tirer une carte</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+// ⚠️ TU REMPLACERAS ICI PAR TES VRAIES INFOS
+const SUPABASE_URL = "TON_URL";
+const SUPABASE_KEY = "TA_CLE_ANON";
+
+const supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function tirer() {
+
+  let { data, error } = await supa
+    .from('Citations')
+    .select('texte');
+
+  if (error) {
+    citation.innerText = "Erreur d’accès";
+    return;
+  }
+
+  const hasard = data[Math.floor(Math.random()*data.length)].texte;
+
+  citation.innerHTML = hasard.replace(
+    "Etre Tout Simplement",
+    "<div class='signature'>Etre Tout Simplement</div>"
+  );
+}
+
+tirer();
+</script>
+
+</body>
+</html>
