@@ -61,31 +61,43 @@ button {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
-// ⚠️ TU REMPLACERAS ICI PAR TES VRAIES INFOS
-const SUPABASE_URL = "TON_URL";
-const SUPABASE_KEY = "TA_CLE_ANON";
+// === Connexion à TON Supabase ===
+const SUPABASE_URL = "https://sjtisjszaavtcoefelvf.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
 
 const supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function tirer() {
+
+  const zone = document.getElementById("citation");
+  zone.innerText = "Connexion aux messages…";
 
   let { data, error } = await supa
     .from('Citations')
     .select('texte');
 
   if (error) {
-    citation.innerText = "Erreur d’accès";
+    console.error(error);
+    zone.innerText = "Accès momentanément indisponible";
     return;
   }
 
-  const hasard = data[Math.floor(Math.random()*data.length)].texte;
+  // Choix aléatoire
+  const hasard = data[Math.floor(Math.random() * data.length)].texte;
 
-  citation.innerHTML = hasard.replace(
+  // Mise en forme de la signature
+  zone.innerHTML = hasard.replace(
     "Etre Tout Simplement",
     "<div class='signature'>Etre Tout Simplement</div>"
   );
+
+  // Taille adaptative
+  if (hasard.length < 120) zone.style.fontSize = "1.6rem";
+  else if (hasard.length < 200) zone.style.fontSize = "1.3rem";
+  else zone.style.fontSize = "1.1rem";
 }
 
+// Lancer au chargement
 tirer();
 </script>
 
