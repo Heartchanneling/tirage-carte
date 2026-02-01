@@ -44,7 +44,15 @@
   align-items: center;
   text-align: center;
 
-  background: linear-gradient(135deg, #FF8C70, #FF7F50);
+  /* 🌸 FILIGRANE IDENTIQUE À TES IMAGES */
+  background:
+    linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)),
+    url('images/fond.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   border: 12px solid #d2b48c;
   border-radius: 25px;
   box-shadow: 0 15px 50px rgba(0,0,0,0.35);
@@ -52,8 +60,6 @@
   font-family: Georgia, serif;
   white-space: pre-line;
   overflow-y: auto;
-
-  animation: fadeZoom 0.6s ease;
 }
 
 #contenu-citation {
