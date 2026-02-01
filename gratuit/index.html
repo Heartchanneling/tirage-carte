@@ -7,15 +7,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
- .copyright {
-  position: absolute;
-  bottom: 10px;
-  right: 14px;
-  font-size: 12px;
-  color: rgba(0,0,0,0.6);
-  font-family: Arial, sans-serif;
-}
-
 <style>
 .tirage-container {
   display: flex;
@@ -36,10 +27,7 @@
   color: #FF6F61;
 }
 
-@keyframes fadeZoom {
-  from { opacity: 0; transform: scale(0.95); }
-  to   { opacity: 1; transform: scale(1); }
-}
+/* ─── CARTE ─────────────────────────────────────── */
 
 .carte {
   position: relative;
@@ -66,17 +54,23 @@
   font-family: Georgia, serif;
 }
 
+/* ─── ZONE TEXTE CENTRÉE ─────────────────────────── */
+
 #contenu-citation {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
 
+  display: flex;
+  align-items: center;      /* CENTRAGE VERTICAL */
+  justify-content: center;  /* CENTRAGE HORIZONTAL */
+
+  text-align: center;
   overflow-y: auto;
-  padding-bottom: 25px;   /* laisse de l’espace pour la signature */
-  max-height: 320px;      /* évite que les textes longs écrasent tout */
+
+  padding-bottom: 25px;
+  max-height: 320px;
 }
+
+/* ─── SIGNATURE ──────────────────────────────────── */
 
 .signature {
   margin-top: 15px;
@@ -90,13 +84,28 @@
   flex-shrink: 0;
 }
 
+/* ─── COPYRIGHT (MAINTENANT BIEN DANS LE STYLE !) ── */
+
+.copyright {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 12px;
+  color: rgba(0,0,0,0.6);
+  font-family: Arial, sans-serif;
+}
+
+/* ─── BOUTON ─────────────────────────────────────── */
+
 .btn-tirer {
   margin-top: 20px;
   padding: 12px 25px;
   font-size: 1.1rem;
+
   border: none;
   border-radius: 12px;
   cursor: pointer;
+
   background: linear-gradient(145deg, #fff, #FFE0B2);
   color: #FF7F50;
   font-weight: 700;
@@ -111,6 +120,7 @@
 
   <div class="carte">
     <div id="contenu-citation">Chargement…</div>
+
     <div class="copyright">© Copyright</div>
   </div>
 
@@ -147,6 +157,7 @@ function tirerCarte() {
   contenu.innerHTML = texteFormate;
 
   const L = texte.length;
+
   if (L < 120) contenu.style.fontSize = "1.6rem";
   else if (L < 200) contenu.style.fontSize = "1.3rem";
   else contenu.style.fontSize = "1.1rem";
