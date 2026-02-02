@@ -8,97 +8,200 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-  background:#fff8f5;
-  font-family: Montserrat;
-  text-align:center;
+.tirage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #fff8f5;
+  font-family: 'Montserrat', sans-serif;
+  padding: 20px;
 }
 
+.titre {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  color: #FF6F61;
+}
+
+/* ===== CARTE ===== */
 .carte {
-  margin:30px auto;
-  width:400px;
-  max-width:90%;
-  min-height:400px;
-  padding:30px;
+  position: relative;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background:
+    linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)),
+    url('../gratuit/images/fond.jpg');
 
-  background:linear-gradient(135deg,#FF8C70,#FF7F50);
-  border:12px solid #d2b48c;
-  border-radius:25px;
+  background-size: cover;
+  background-position: center;
+
+  width: 400px;
+  max-width: 90vw;
+  height: 460px;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 12px solid #d2b48c;
+  border-radius: 25px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.35);
+
+  font-family: Georgia, serif;
 }
 
+/* ZONE CENTRALE = CITATION SEULE */
+.zone-centrale {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+#contenu-citation {
+  width: 100%;
+  text-align: center;
+  line-height: 1.45;
+}
+
+/* SIGNATURE */
 .signature {
-  margin-top:20px;
-  font-family:'Great Vibes';
-  font-size:2rem;
-  color:#228B22;
+  margin-top: 18px;
+
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.9rem;
+  color: #228B22;
+
+  text-align: center;
 }
 
-button {
-  padding:12px 25px;
-  border:none;
-  border-radius:12px;
-  background:#fff;
-  cursor:pointer;
+/* COPYRIGHT */
+.copyright {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+
+  font-size: 12px;
+  color: rgba(0,0,0,0.6);
+  font-family: Arial, sans-serif;
+}
+
+/* BOUTON */
+.btn-tirer {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: linear-gradient(145deg, #fff, #FFE0B2);
+  color: #FF7F50;
+  font-weight: 700;
+}
+
+/* MESSAGE ERREUR */
+.erreur {
+  color: #b30000;
+  margin-top: 10px;
+  font-size: 0.9rem;
 }
 </style>
-
 </head>
 
 <body>
 
-<h1>Tirage privé</h1>
+<div class="tirage-container">
 
-<div class="carte">
-  <div id="citation">Connexion sécurisée…</div>
+  <h1 class="titre">Tirage privé de citations canalisées</h1>
+
+  <div class="carte">
+
+    <div class="zone-centrale">
+      <div id="contenu-citation">Connexion au tirage privé…</div>
+      <div id="signature" class="signature"></div>
+    </div>
+
+    <div class="copyright">© Copyright</div>
+
+  </div>
+
+  <button onclick="tirerCarte()" class="btn-tirer">
+    Tirer une citation canalisée
+  </button>
+
+  <div id="message" class="erreur"></div>
+
 </div>
 
-<button onclick="tirer()">Tirer une carte</button>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 <script>
-// === Connexion à TON Supabase ===
-const SUPABASE_URL = "https://sjtisjszaavtcoefelvf.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
+// ======== A REMPLACER PAR TES INFOS =========
+const SUPABASE_URL = "https://supabase.com/dashboard/project/sjtisjszaavtcoefelvf";
+const SUPABASE_ANON_KEY = "sb_publishable_I0PT1bMgPnz6SXhbJKRKYw_Rg0LKMFT";
+// ============================================
 
-const supa = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let citations = [];
 
-async function tirer() {
+async function chargerCitations() {
+  try {
+    const res = await fetch(
+      SUPABASE_URL + "/rest/v1/Citations?select=texte",
+      {
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + SUPABASE_ANON_KEY
+        }
+      }
+    );
 
-  const zone = document.getElementById("citation");
-  zone.innerText = "Connexion aux messages…";
+    if (!res.ok) throw new Error("Accès Supabase refusé");
 
-  let { data, error } = await supa
-    .from('Citations')
-    .select('texte');
+    const data = await res.json();
 
-  if (error) {
-    console.error(error);
-    zone.innerText = "Accès momentanément indisponible";
-    return;
+    citations = data.map(ligne => ligne.texte);
+
+    tirerCarte();
+
+  } catch (e) {
+    document.getElementById("contenu-citation").innerText =
+      "Accès au tirage privé impossible.";
+    document.getElementById("message").innerText =
+      "Vérifie ta connexion ou ton accès privé.";
   }
-
-  // Choix aléatoire
-  const hasard = data[Math.floor(Math.random() * data.length)].texte;
-
-  // Mise en forme de la signature
-  zone.innerHTML = hasard.replace(
-    "Etre Tout Simplement",
-    "<div class='signature'>Etre Tout Simplement</div>"
-  );
-
-  // Taille adaptative
-  if (hasard.length < 120) zone.style.fontSize = "1.6rem";
-  else if (hasard.length < 200) zone.style.fontSize = "1.3rem";
-  else zone.style.fontSize = "1.1rem";
 }
 
-// Lancer au chargement
-tirer();
+function tirerCarte() {
+  if (!citations.length) return;
+
+  const texte = citations[Math.floor(Math.random() * citations.length)];
+
+  const contenu = document.getElementById("contenu-citation");
+  const signature = document.getElementById("signature");
+
+  // Séparation propre citation / signature
+  let texteSansSignature = texte.replace("Etre Tout Simplement", "").trim();
+
+  contenu.innerText = texteSansSignature;
+  signature.innerText = "Etre Tout Simplement";
+
+  // Taille adaptative
+  const L = texte.length;
+
+  if (L < 120) contenu.style.fontSize = "1.6rem";
+  else if (L < 200) contenu.style.fontSize = "1.3rem";
+  else contenu.style.fontSize = "1.1rem";
+}
+
+// Lancement
+chargerCitations();
 </script>
 
 </body>
