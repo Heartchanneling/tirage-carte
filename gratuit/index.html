@@ -40,7 +40,7 @@
 
   width: 400px;
   max-width: 90vw;
-  height: 460px;               /* 👉 HAUTEUR FIXE STABLE */
+  height: 460px;
 
   padding: 25px;
 
@@ -54,15 +54,15 @@
   font-family: Georgia, serif;
 }
 
-/* ===== ZONE CENTRALE ===== */
+/* ===== ZONE CENTRALE → NOM CORRIGÉ ===== */
 .zone-centrale {
   flex: 1;
 
   display: flex;
   flex-direction: column;
 
-  justify-content: center;   /* 👉 VRAI CENTRAGE VERTICAL */
-  align-items: center;
+  justify-content: center;   /* centrage vertical */
+  align-items: center;       /* centrage horizontal */
 
   text-align: center;
 }
@@ -118,16 +118,17 @@
 
   <h1 class="titre">Tirage de cartes de citations canalisées</h1>
 
- <div class="carte">
+  <div class="carte">
 
-  <div class="zone-texte">
-    <div id="contenu-citation">Chargement…</div>
-    <div id="signature" class="signature"></div>
+    <!-- ✅ ICI NOM CORRIGÉ -->
+    <div class="zone-centrale">
+      <div id="contenu-citation">Chargement…</div>
+      <div id="signature" class="signature"></div>
+    </div>
+
+    <div class="copyright">© Copyright</div>
+
   </div>
-
-  <div class="copyright">© Copyright</div>
-
-</div>
 
   <button onclick="tirerCarte()" class="btn-tirer">
     Tirer une citation canalisée
@@ -153,7 +154,7 @@ function tirerCarte() {
   const contenu = document.getElementById("contenu-citation");
   const signature = document.getElementById("signature");
 
-  // ✅ ON SÉPARE PROPREMENT
+  // Séparation propre
   let texteSansSignature = texte.replace("Etre Tout Simplement", "").trim();
 
   contenu.innerText = texteSansSignature;
@@ -170,3 +171,4 @@ function tirerCarte() {
 
 </body>
 </html>
+
