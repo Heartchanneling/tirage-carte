@@ -151,14 +151,16 @@ function tirerCarte() {
   const texte = citations[Math.floor(Math.random() * citations.length)];
 
   const contenu = document.getElementById("contenu-citation");
+  const signature = document.getElementById("signature");
 
-  // On enlève la signature du texte source
-  const texteNet = texte.replace("Etre Tout Simplement", "").trim();
+  // ✅ ON SÉPARE PROPREMENT
+  let texteSansSignature = texte.replace("Etre Tout Simplement", "").trim();
 
-  contenu.innerText = texteNet;
+  contenu.innerText = texteSansSignature;
+  signature.innerText = "Etre Tout Simplement";
 
-  // Taille adaptative
-  const L = texteNet.length;
+  // taille adaptative
+  const L = texte.length;
 
   if (L < 120) contenu.style.fontSize = "1.6rem";
   else if (L < 200) contenu.style.fontSize = "1.3rem";
