@@ -27,11 +27,7 @@
   color: #FF6F61;
 }
 
-@keyframes fadeZoom {
-  from { opacity: 0; transform: scale(0.95); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
+/* ===== CARTE ===== */
 .carte {
   position: relative;
 
@@ -44,8 +40,9 @@
 
   width: 400px;
   max-width: 90vw;
-  min-height: 420px;
-  padding: 30px;
+  height: 460px;               /* 👉 HAUTEUR FIXE STABLE */
+
+  padding: 25px;
 
   display: flex;
   flex-direction: column;
@@ -57,37 +54,38 @@
   font-family: Georgia, serif;
 }
 
-/* ✅ ZONE QUI CENTRE UNIQUEMENT LA CITATION */
-.zone-texte {
+/* ===== ZONE CENTRALE ===== */
+.zone-centrale {
   flex: 1;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* centrage vertical */
-  align-items: center;       /* centrage horizontal */
 
-  width: 100%;
+  justify-content: center;   /* 👉 VRAI CENTRAGE VERTICAL */
+  align-items: center;
+
+  text-align: center;
 }
 
+/* TEXTE PRINCIPAL */
 #contenu-citation {
   width: 100%;
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
-/* ✅ SIGNATURE TOUJOURS EN DESSOUS */
+/* SIGNATURE */
 .signature {
-  margin-top: 14px;
+  margin-top: 18px;
 
   font-family: 'Great Vibes', cursive;
   font-size: 1.9rem;
   color: #228B22;
 
   text-align: center;
-  width: 100%;
 }
 
-/* ✅ COPYRIGHT PARFAIT */
+/* COPYRIGHT */
 .copyright {
   position: absolute;
   bottom: 10px;
@@ -98,6 +96,7 @@
   font-family: Arial, sans-serif;
 }
 
+/* BOUTON */
 .btn-tirer {
   margin-top: 20px;
   padding: 12px 25px;
@@ -116,12 +115,15 @@
 <body>
 
 <div class="tirage-container">
+
   <h1 class="titre">Tirage de cartes de citations canalisées</h1>
 
   <div class="carte">
-    <div class="zone-texte">
+
+    <!-- 👉 ICI LA ZONE QUI DOIT ÊTRE CENTRÉE -->
+    <div class="zone-centrale">
       <div id="contenu-citation">Chargement…</div>
-      <div id="signature" class="signature"></div>
+      <div class="signature">Etre Tout Simplement</div>
     </div>
 
     <div class="copyright">© Copyright</div>
@@ -130,6 +132,7 @@
   <button onclick="tirerCarte()" class="btn-tirer">
     Tirer une citation canalisée
   </button>
+
 </div>
 
 <script>
@@ -140,10 +143,6 @@ fetch("citations.json?" + Date.now())
   .then(data => {
     citations = data;
     tirerCarte();
-  })
-  .catch(() => {
-    document.getElementById("contenu-citation").innerText =
-      "Impossible de charger les citations.";
   });
 
 function tirerCarte() {
@@ -152,13 +151,11 @@ function tirerCarte() {
   const texte = citations[Math.floor(Math.random() * citations.length)];
 
   const contenu = document.getElementById("contenu-citation");
-  const signature = document.getElementById("signature");
 
-  // ✅ On sépare proprement la signature
+  // On enlève la signature du texte source
   const texteNet = texte.replace("Etre Tout Simplement", "").trim();
 
   contenu.innerText = texteNet;
-  signature.innerText = "Etre Tout Simplement";
 
   // Taille adaptative
   const L = texteNet.length;
