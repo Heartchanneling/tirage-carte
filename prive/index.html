@@ -33,7 +33,7 @@
 
   background:
     linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)),
-    url('../gratuit/images/fond.jpg');
+    url('images/fond.jpg');
 
   background-size: cover;
   background-position: center;
@@ -54,7 +54,7 @@
   font-family: Georgia, serif;
 }
 
-/* ZONE CENTRALE = CITATION SEULE */
+/* ===== ZONE CENTRALE ===== */
 .zone-centrale {
   flex: 1;
 
@@ -84,7 +84,7 @@
   text-align: center;
 }
 
-/* COPYRIGHT */
+/* COPYRIGHT FIXE */
 .copyright {
   position: absolute;
   bottom: 10px;
@@ -107,14 +107,8 @@
   color: #FF7F50;
   font-weight: 700;
 }
-
-/* MESSAGE ERREUR */
-.erreur {
-  color: #b30000;
-  margin-top: 10px;
-  font-size: 0.9rem;
-}
 </style>
+
 </head>
 
 <body>
@@ -126,7 +120,7 @@
   <div class="carte">
 
     <div class="zone-centrale">
-      <div id="contenu-citation">Connexion au tirage privé…</div>
+      <div id="contenu-citation">Chargement…</div>
       <div id="signature" class="signature"></div>
     </div>
 
@@ -138,45 +132,34 @@
     Tirer une citation canalisée
   </button>
 
-  <div id="message" class="erreur"></div>
-
 </div>
 
 <script>
-// ======== A REMPLACER PAR TES INFOS =========
-const SUPABASE_URL = "https://supabase.com/dashboard/project/sjtisjszaavtcoefelvf";
-const SUPABASE_ANON_KEY = "sb_publishable_I0PT1bMgPnz6SXhbJKRKYw_Rg0LKMFT";
-// ============================================
+// ======== À REMPLACER PAR TES INFOS SUPABASE =========
+const SUPABASE_URL = "TON_URL_SUPABASE";
+const SUPABASE_ANON_KEY = "TA_CLE_ANON";
+// ======================================================
+
+async function chargerCitations() {
+  const res = await fetch(
+    SUPABASE_URL + "/rest/v1/Citations?select=texte",
+    {
+      headers: {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": "Bearer " + SUPABASE_ANON_KEY
+      }
+    }
+  );
+
+  return await res.json();
+}
 
 let citations = [];
 
-async function chargerCitations() {
-  try {
-    const res = await fetch(
-      SUPABASE_URL + "/rest/v1/Citations?select=texte",
-      {
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": "Bearer " + SUPABASE_ANON_KEY
-        }
-      }
-    );
-
-    if (!res.ok) throw new Error("Accès Supabase refusé");
-
-    const data = await res.json();
-
-    citations = data.map(ligne => ligne.texte);
-
-    tirerCarte();
-
-  } catch (e) {
-    document.getElementById("contenu-citation").innerText =
-      "Accès au tirage privé impossible.";
-    document.getElementById("message").innerText =
-      "Vérifie ta connexion ou ton accès privé.";
-  }
-}
+chargerCitations().then(data => {
+  citations = data.map(ligne => ligne.texte);
+  tirerCarte();
+});
 
 function tirerCarte() {
   if (!citations.length) return;
@@ -186,32 +169,17 @@ function tirerCarte() {
   const contenu = document.getElementById("contenu-citation");
   const signature = document.getElementById("signature");
 
-  // On sépare citation / signature
   let texteSansSignature = texte.replace("Etre Tout Simplement", "").trim();
 
   contenu.innerText = texteSansSignature;
   signature.innerText = "Etre Tout Simplement";
 
-  // Taille adaptative
   const L = texte.length;
 
   if (L < 120) contenu.style.fontSize = "1.6rem";
   else if (L < 200) contenu.style.fontSize = "1.3rem";
   else contenu.style.fontSize = "1.1rem";
-
-  // 👉 On s’assure que le copyright reste toujours visible
-  const copyright = document.querySelector(".copyright");
-  if (!copyright) {
-    const div = document.createElement("div");
-    div.className = "copyright";
-    div.innerText = "© Copyright";
-    document.querySelector(".carte").appendChild(div);
-  }
 }
-
-
-// Lancement
-chargerCitations();
 </script>
 
 </body>
