@@ -8,13 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
+
+/* ===== PAGE GÉNÉRALE ===== */
 .tirage-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   min-height: 100vh;
   background: #fff8f5;
+
   font-family: 'Montserrat', sans-serif;
   padding: 20px;
 }
@@ -22,6 +26,7 @@
 .titre {
   text-align: center;
   margin-bottom: 20px;
+
   font-family: 'Great Vibes', cursive;
   font-size: 2.5rem;
   color: #FF6F61;
@@ -40,7 +45,7 @@
 
   width: 400px;
   max-width: 90vw;
-  height: 460px;
+  height: 460px;           /* HAUTEUR FIXE POUR STABILITÉ */
 
   padding: 25px;
 
@@ -54,38 +59,35 @@
   font-family: Georgia, serif;
 }
 
-/* ===== ZONE CENTRALE → NOM CORRIGÉ ===== */
-.zone-centrale {
+/* ===== ZONE CITATION : LA SEULE CENTRÉE ===== */
+.zone-citation {
   flex: 1;
 
   display: flex;
-  flex-direction: column;
-
-  justify-content: center;   /* centrage vertical */
-  align-items: center;       /* centrage horizontal */
+  justify-content: center;
+  align-items: center;
 
   text-align: center;
 }
 
-/* TEXTE PRINCIPAL */
 #contenu-citation {
   width: 100%;
-  text-align: center;
   line-height: 1.45;
 }
 
-/* SIGNATURE */
-.signature {
-  margin-top: 18px;
+/* ===== SIGNATURE SÉPARÉE ===== */
+.zone-signature {
+  text-align: center;
+  padding-top: 8px;
+}
 
+.signature {
   font-family: 'Great Vibes', cursive;
   font-size: 1.9rem;
   color: #228B22;
-
-  text-align: center;
 }
 
-/* COPYRIGHT */
+/* ===== COPYRIGHT ===== */
 .copyright {
   position: absolute;
   bottom: 10px;
@@ -96,20 +98,23 @@
   font-family: Arial, sans-serif;
 }
 
-/* BOUTON */
+/* ===== BOUTON ===== */
 .btn-tirer {
   margin-top: 20px;
+
   padding: 12px 25px;
   font-size: 1.1rem;
+
   border: none;
   border-radius: 12px;
   cursor: pointer;
+
   background: linear-gradient(145deg, #fff, #FFE0B2);
   color: #FF7F50;
   font-weight: 700;
 }
-</style>
 
+</style>
 </head>
 
 <body>
@@ -120,9 +125,13 @@
 
   <div class="carte">
 
-    <!-- ✅ ICI NOM CORRIGÉ -->
-    <div class="zone-centrale">
+    <!-- ✅ SEULE CETTE ZONE EST CENTRÉE -->
+    <div class="zone-citation">
       <div id="contenu-citation">Chargement…</div>
+    </div>
+
+    <!-- ✅ SIGNATURE EN DEHORS DU CENTRAGE -->
+    <div class="zone-signature">
       <div id="signature" class="signature"></div>
     </div>
 
@@ -137,6 +146,7 @@
 </div>
 
 <script>
+
 let citations = [];
 
 fetch("citations.json?" + Date.now())
@@ -147,6 +157,7 @@ fetch("citations.json?" + Date.now())
   });
 
 function tirerCarte() {
+
   if (!citations.length) return;
 
   const texte = citations[Math.floor(Math.random() * citations.length)];
@@ -154,21 +165,24 @@ function tirerCarte() {
   const contenu = document.getElementById("contenu-citation");
   const signature = document.getElementById("signature");
 
-  // Séparation propre
+  // ✅ ON SÉPARE PROPREMENT LE TEXTE ET LA SIGNATURE
   let texteSansSignature = texte.replace("Etre Tout Simplement", "").trim();
 
   contenu.innerText = texteSansSignature;
   signature.innerText = "Etre Tout Simplement";
 
-  // taille adaptative
+  // ✅ TAILLE ADAPTATIVE
   const L = texte.length;
 
-  if (L < 120) contenu.style.fontSize = "1.6rem";
-  else if (L < 200) contenu.style.fontSize = "1.3rem";
-  else contenu.style.fontSize = "1.1rem";
+  if (L < 120)
+    contenu.style.fontSize = "1.6rem";
+  else if (L < 200)
+    contenu.style.fontSize = "1.3rem";
+  else
+    contenu.style.fontSize = "1.1rem";
 }
+
 </script>
 
 </body>
 </html>
-
