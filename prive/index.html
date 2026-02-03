@@ -26,7 +26,7 @@
 
   background:
     linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)),
-    url('../images/fond.jpg');   /* ← CHEMIN IMPORTANT */
+    url('images/fond.jpg');      /* ✅ CORRECTION ICI */
 
   background-size: cover;
   background-position: center;
@@ -113,18 +113,15 @@
 </div>
 
 <script>
-/* ===== TES INFOS ===== */
 const SUPABASE_URL =
 "https://sjtisjszaavtcoefelvf.supabase.co";
 
 const SUPABASE_ANON_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
-/* ====================== */
 
 let citations = [];
 
 async function charger() {
-
   const res = await fetch(
     SUPABASE_URL + "/rest/v1/Citations?select=texte",
     {
