@@ -7,6 +7,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
+<!-- Librairie pour convertir la carte en image -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
 .tirage-container {
   display: flex;
@@ -84,7 +87,7 @@
   text-align: center;
 }
 
-/* COPYRIGHT FIXE */
+/* COPYRIGHT */
 .copyright {
   position: absolute;
   bottom: 10px;
@@ -95,10 +98,15 @@
   font-family: Arial, sans-serif;
 }
 
-/* BOUTON */
-.btn-tirer {
+/* BOUTONS */
+.btn-zone {
+  display: flex;
+  gap: 12px;
   margin-top: 20px;
-  padding: 12px 25px;
+}
+
+.btn {
+  padding: 12px 20px;
   font-size: 1.1rem;
   border: none;
   border-radius: 12px;
@@ -117,28 +125,37 @@
 
   <h1 class="titre">Tirage privé de citations canalisées</h1>
 
-  <div class="carte">
-
+  <div class="carte" id="carte">
     <div class="zone-centrale">
       <div id="contenu-citation">Chargement…</div>
       <div id="signature" class="signature"></div>
     </div>
 
     <div class="copyright">© Copyright</div>
-
   </div>
 
-  <button onclick="tirerCarte()" class="btn-tirer">
-    Tirer une citation canalisée
-  </button>
+  <div class="btn-zone">
+    <button onclick="tirerCarte()" class="btn">
+      Tirer une citation
+    </button>
+
+    <button onclick="telechargerCarte()" class="btn">
+      Télécharger l’image
+    </button>
+  </div>
 
 </div>
 
 <script>
-// ======== À REMPLACER PAR TES INFOS SUPABASE =========
+// ======== TES INFOS SUPABASE =========
 const SUPABASE_URL = "https://sjtisjszaavtcoefelvf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
-// ======================================================
+// =====================================
+
+// --- Protection par code ---
+if (localStorage.getItem("acces_ok") !== "oui") {
+  window.location = "login.html";
+}
 
 async function chargerCitations() {
   const res = await fetch(
@@ -179,6 +196,18 @@ function tirerCarte() {
   if (L < 120) contenu.style.fontSize = "1.6rem";
   else if (L < 200) contenu.style.fontSize = "1.3rem";
   else contenu.style.fontSize = "1.1rem";
+}
+
+/* ===== TÉLÉCHARGEMENT DE LA CARTE ===== */
+function telechargerCarte() {
+  const carte = document.getElementById("carte");
+
+  html2canvas(carte).then(canvas => {
+    const lien = document.createElement("a");
+    lien.download = "ma-carte-canalisee.png";
+    lien.href = canvas.toDataURL("image/png");
+    lien.click();
+  });
 }
 </script>
 
