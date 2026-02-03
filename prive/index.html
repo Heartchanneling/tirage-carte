@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tirage privé – Citations canalisées</title>
+<title>Tirage privé – Citations</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Librairie pour convertir la carte en image -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
@@ -22,21 +21,12 @@
   padding: 20px;
 }
 
-.titre {
-  text-align: center;
-  margin-bottom: 20px;
-  font-family: 'Great Vibes', cursive;
-  font-size: 2.5rem;
-  color: #FF6F61;
-}
-
-/* ===== CARTE ===== */
 .carte {
   position: relative;
 
   background:
     linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)),
-    url('images/fond.jpg');
+    url('../images/fond.jpg');   /* ← CHEMIN IMPORTANT */
 
   background-size: cover;
   background-position: center;
@@ -57,16 +47,12 @@
   font-family: Georgia, serif;
 }
 
-/* ===== ZONE CENTRALE ===== */
 .zone-centrale {
   flex: 1;
-
   display: flex;
   flex-direction: column;
-
   justify-content: center;
   align-items: center;
-
   text-align: center;
 }
 
@@ -76,29 +62,21 @@
   line-height: 1.45;
 }
 
-/* SIGNATURE */
 .signature {
   margin-top: 18px;
-
   font-family: 'Great Vibes', cursive;
   font-size: 1.9rem;
   color: #228B22;
-
-  text-align: center;
 }
 
-/* COPYRIGHT */
 .copyright {
   position: absolute;
   bottom: 10px;
   right: 14px;
-
   font-size: 12px;
   color: rgba(0,0,0,0.6);
-  font-family: Arial, sans-serif;
 }
 
-/* BOUTONS */
 .btn-zone {
   display: flex;
   gap: 12px;
@@ -107,57 +85,46 @@
 
 .btn {
   padding: 12px 20px;
-  font-size: 1.1rem;
-  border: none;
   border-radius: 12px;
+  border: none;
   cursor: pointer;
-  background: linear-gradient(145deg, #fff, #FFE0B2);
-  color: #FF7F50;
-  font-weight: 700;
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="tirage-container">
 
-  <h1 class="titre">Tirage privé de citations canalisées</h1>
-
-  <div class="carte" id="carte">
-    <div class="zone-centrale">
-      <div id="contenu-citation">Chargement…</div>
-      <div id="signature" class="signature"></div>
-    </div>
-
-    <div class="copyright">© Copyright</div>
+<div class="carte" id="carte">
+  <div class="zone-centrale">
+    <div id="contenu-citation">Chargement…</div>
+    <div id="signature" class="signature"></div>
   </div>
 
-  <div class="btn-zone">
-    <button onclick="tirerCarte()" class="btn">
-      Tirer une citation
-    </button>
+  <div class="copyright">© Copyright</div>
+</div>
 
-    <button onclick="telechargerCarte()" class="btn">
-      Télécharger l’image
-    </button>
-  </div>
+<div class="btn-zone">
+  <button onclick="tirerCarte()" class="btn">Tirer une citation</button>
+  <button onclick="telechargerCarte()" class="btn">Télécharger</button>
+</div>
 
 </div>
 
 <script>
-// ======== TES INFOS SUPABASE =========
-const SUPABASE_URL = "https://sjtisjszaavtcoefelvf.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
-// =====================================
+/* ===== TES INFOS ===== */
+const SUPABASE_URL =
+"https://sjtisjszaavtcoefelvf.supabase.co";
 
-// --- Protection par code ---
-if (localStorage.getItem("acces_ok") !== "oui") {
-  window.location = "login.html";
-}
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
+/* ====================== */
 
-async function chargerCitations() {
+let citations = [];
+
+async function charger() {
+
   const res = await fetch(
     SUPABASE_URL + "/rest/v1/Citations?select=texte",
     {
@@ -168,27 +135,26 @@ async function chargerCitations() {
     }
   );
 
-  return await res.json();
-}
+  citations = (await res.json()).map(l => l.texte);
 
-let citations = [];
-
-chargerCitations().then(data => {
-  citations = data.map(ligne => ligne.texte);
   tirerCarte();
-});
+}
 
 function tirerCarte() {
   if (!citations.length) return;
 
-  const texte = citations[Math.floor(Math.random() * citations.length)];
+  const texte =
+    citations[Math.floor(Math.random() * citations.length)];
 
-  const contenu = document.getElementById("contenu-citation");
-  const signature = document.getElementById("signature");
+  const contenu =
+    document.getElementById("contenu-citation");
 
-  let texteSansSignature = texte.replace("Etre Tout Simplement", "").trim();
+  const signature =
+    document.getElementById("signature");
 
-  contenu.innerText = texteSansSignature;
+  contenu.innerText =
+    texte.replace("Etre Tout Simplement","").trim();
+
   signature.innerText = "Etre Tout Simplement";
 
   const L = texte.length;
@@ -198,17 +164,17 @@ function tirerCarte() {
   else contenu.style.fontSize = "1.1rem";
 }
 
-/* ===== TÉLÉCHARGEMENT DE LA CARTE ===== */
 function telechargerCarte() {
-  const carte = document.getElementById("carte");
-
-  html2canvas(carte).then(canvas => {
-    const lien = document.createElement("a");
-    lien.download = "ma-carte-canalisee.png";
-    lien.href = canvas.toDataURL("image/png");
-    lien.click();
+  html2canvas(document.getElementById("carte"))
+  .then(canvas => {
+    const a = document.createElement("a");
+    a.download = "carte.png";
+    a.href = canvas.toDataURL();
+    a.click();
   });
 }
+
+charger();
 </script>
 
 </body>
