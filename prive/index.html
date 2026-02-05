@@ -21,12 +21,13 @@
   padding: 20px;
 }
 
+/* ===== CARTE ===== */
 .carte {
   position: relative;
 
   background:
     linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)),
-    url('images/fond.jpg');      /* ✅ CORRECTION ICI */
+    url('images/fond.jpg');
 
   background-size: cover;
   background-position: center;
@@ -47,12 +48,14 @@
   font-family: Georgia, serif;
 }
 
-.zone-centrale {
+/* ===== CITATION SEULE AU CENTRE ===== */
+.zone-citation {
   flex: 1;
+
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   text-align: center;
 }
 
@@ -62,21 +65,29 @@
   line-height: 1.45;
 }
 
+/* ===== SIGNATURE INDÉPENDANTE EN BAS ===== */
+.zone-signature {
+  text-align: center;
+  padding-bottom: 22px;
+}
+
 .signature {
-  margin-top: 18px;
   font-family: 'Great Vibes', cursive;
   font-size: 1.9rem;
   color: #228B22;
 }
 
+/* ===== COPYRIGHT ===== */
 .copyright {
   position: absolute;
   bottom: 10px;
   right: 14px;
+
   font-size: 12px;
   color: rgba(0,0,0,0.6);
 }
 
+/* ===== BOUTONS ===== */
 .btn-zone {
   display: flex;
   gap: 12px;
@@ -97,12 +108,17 @@
 <div class="tirage-container">
 
 <div class="carte" id="carte">
-  <div class="zone-centrale">
-    <div id="contenu-citation">Chargement…</div>
-    <div id="signature" class="signature"></div>
+
+  <div class="zone-citation">
+      <div id="contenu-citation">Chargement…</div>
+  </div>
+
+  <div class="zone-signature">
+      <div id="signature" class="signature"></div>
   </div>
 
   <div class="copyright">© Copyright</div>
+
 </div>
 
 <div class="btn-zone">
@@ -113,15 +129,18 @@
 </div>
 
 <script>
+/* ===== TES INFOS SUPABASE ===== */
 const SUPABASE_URL =
 "https://sjtisjszaavtcoefelvf.supabase.co";
 
 const SUPABASE_ANON_KEY =
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqdGlzanN6YWF2dGNvZWZlbHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MzQ4NzMsImV4cCI6MjA4NTIxMDg3M30.8SwcuKzF6igtqyE51peK2QZAbNFxhDid0V7BxrqSHhY";
+/* ============================== */
 
 let citations = [];
 
 async function charger() {
+
   const res = await fetch(
     SUPABASE_URL + "/rest/v1/Citations?select=texte",
     {
@@ -149,11 +168,13 @@ function tirerCarte() {
   const signature =
     document.getElementById("signature");
 
+  // Séparation propre
   contenu.innerText =
     texte.replace("Etre Tout Simplement","").trim();
 
   signature.innerText = "Etre Tout Simplement";
 
+  // Taille adaptative
   const L = texte.length;
 
   if (L < 120) contenu.style.fontSize = "1.6rem";
